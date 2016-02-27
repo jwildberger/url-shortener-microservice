@@ -1,0 +1,23 @@
+{
+  "name": "url-shortener-microservice",
+  "version": "1.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jwildberger/url-shortener-microservice.git"
+  },
+  "author": "jwildberger",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jwildberger/url-shortener-microservice/issues"
+  },
+  "homepage": "https://github.com/jwildberger/url-shortener-microservice#readme",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
+}
