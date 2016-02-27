@@ -5,19 +5,19 @@ var shortToUrl = {};
 
 app.get(/\./, function (req, res) {
   var url = req.url.split(/\//)[1];
+  if(!/http/.test(url)){
+    url = 'http://' + url;
+  }
   var short = shorten.shortenUrl(url);
-  if(!/^http/.test(url)){
-		url = 'http://' + url;
-	}
   shortToUrl[short] = url;
+  res.send(short);
 });
 
 app.get(/[A-Za-z0-9]/, function (req, res){
   var short = req.url.split(/\//)[1];
-  console.log(short);
 	var url = shortToUrl[short];
   if(!url){
-    res.send('Not a valid shotened url.');
+    res.send('Not a valid shortened url.');
   }
 	res.redirect(url);
 });
