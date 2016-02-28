@@ -12,6 +12,7 @@ app.get('/', function (req, res) {
 });
 
 app.get(/\w\w+\.\w{2,4}/, function (req, res) {
+  console.log(1);
   var url = req.url.split('/').splice(1).join('/');
   var index = 1;
   var short, objUrl, mainRes;
@@ -36,17 +37,19 @@ app.get(/\w\w+\.\w{2,4}/, function (req, res) {
   }
 });
 
-app.get(/^\/\w+$/, function (req, res){
+app.get(/^\/\w{1,4}$/, function (req, res){
+  console.log(2);
   var short = req.url.split(/\//)[1];
 	var url = shortToUrl[short];
   if(!url){
     res.send('Not a valid shortened url.');
+  }else{
+	  res.redirect(url);
   }
-	res.redirect(url);
 });
 
 app.use(function(req, res, next) {
-  res.status(404).send(shorten.getNewUrl(url, short));
+  res.status(404).send(shorten.getErr());
 });
 
 app.listen(process.env.PORT||3000);

@@ -7,7 +7,7 @@ module.exports = {
     return temp.map(getBaseNum).join('');
   },
   getNewUrl: function(url, short){
-    short = 'localhost:3000/' + short;
+    short = 'https://jxq.herokuapp.com/' + short;
     return {original_url: url, short_url: short};
   },
   getErr: function(){
