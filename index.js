@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var http = require('http');
+var https = require('https');
 var urlMod = require('url');
 var shorten = require('./shorten.js');
 var path = require('path');
@@ -20,16 +21,19 @@ app.get(/\w\w+\.\w{2,4}/, function (req, res) {
   objUrl = urlMod.parse(url, true);
   short = shorten.shortenUrl(url);
   mainRes = res;
-  http.get(objUrl, function(res){
-    while(shortToUrl.hasOwnProperty(short) && shortToUrl[short] !== url){
-      short = shorten.shortenUrl(url+index);
-      index++;
-    }
-    shortToUrl[short] = url;
-    mainRes.send(shorten.getNewUrl(url, short));
-  }).on('error', function(e){
-    mainRes.send(shorten.getErr());
-  });  
+  if(/https/.test(url)){
+    https.get(objUrl, function(res){
+      checkUrl(mainRes, short, url, shortToUrl);
+    }).on('error', function(e){
+      mainRes.send(shorten.getErr());
+    });  
+  }else{
+    http.get(objUrl, function(res){
+      checkUrl(mainRes, short, url, shortToUrl);
+    }).on('error', function(e){
+      mainRes.send(shorten.getErr());
+    });  
+  }
 });
 
 app.get(/^\/\w+$/, function (req, res){
@@ -46,3 +50,12 @@ app.use(function(req, res, next) {
 });
 
 app.listen(process.env.PORT||3000);
+
+function checkUrl(mainRes, short, url, shortToUrl){
+  while(shortToUrl.hasOwnProperty(short) && shortToUrl[short] !== url){
+    short = shorten.shortenUrl(url+index);
+    index++;
+  }
+  shortToUrl[short] = url;
+  mainRes.send(shorten.getNewUrl(url, short));
+}
