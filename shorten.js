@@ -5,6 +5,13 @@ module.exports = {
     var temp = url.split('').map(toCode).reduce(add);
     temp = changeBase(temp);
     return temp.map(getBaseNum).join('');
+  },
+  getNewUrl: function(url, short){
+    short = 'localhost:3000/' + short;
+    return {original_url: url, short_url: short};
+  },
+  getErr: function(){
+    return {error: "URL invalid"};
   }
 }
 

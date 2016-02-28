@@ -26,10 +26,9 @@ app.get(/\w\w+\.\w{2,4}/, function (req, res) {
       index++;
     }
     shortToUrl[short] = url;
-    console.log(shortToUrl);
-    mainRes.send(short);
+    mainRes.send(shorten.getNewUrl(url, short));
   }).on('error', function(e){
-    mainres.send('Not a valid url');
+    mainRes.send(shorten.getErr());
   });  
 });
 
@@ -42,6 +41,8 @@ app.get(/^\/\w+$/, function (req, res){
 	res.redirect(url);
 });
 
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
+app.use(function(req, res, next) {
+  res.status(404).send(shorten.getNewUrl(url, short));
 });
+
+app.listen(process.env.PORT||3000);
